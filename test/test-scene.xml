@@ -1,0 +1,62 @@
+<scene>
+	<s>
+		<text>
+			abc
+		</text>
+		<s>
+			<text>
+				def
+			</text>
+		</s>
+	</s>
+	<s>
+		<text>
+			ghi
+		</text>
+		<s>
+			<set id="foo" value="foo"/>
+			<text>
+				jkl v{foo}
+			</text>
+		</s>
+		<s>
+			<set id="bar" value="true"/>
+			<text>
+				mno v{bar|bar|nil}
+			</text>
+		</s>
+		<s>
+			<set id="bar" value="false"/>
+			<text>
+				pqr v{bar|bar|foo}
+			</text>
+		</s>
+	</s>
+	<s>
+		<choice prompt="abc">
+			<text>
+				abc
+			</text>
+			<s>
+				<text>
+					def
+				</text>
+			</s>
+			<s>
+				<text>
+					ghi
+				</text>
+			</s>
+		</choice>
+		<choice prompt="def">
+			<text>
+				def
+			</text>
+		</choice>
+	</s>
+	<s>
+		<text>
+			vwx
+		</text>
+	</s>
+</scene>

@@ -1,11 +1,19 @@
 {
   "name": "sweettext",
   "version": "1.0.0",
-  "description": "",
+  "description": "A simple, custom narration library.",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "test": "./node_modules/.bin/mocha --reporter spec"
   },
-  "author": "",
-  "license": "MIT"
+  "author": "FelixPitau <felixpitau@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "fs": "0.0.1-security"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.4.1"
+  }
 }
