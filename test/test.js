@@ -2,7 +2,7 @@
 var st = require('../index.js'),
 		expect = require("chai").expect;
 
-st.load(__dirname + '/test-scene.xml');
+st.load(__dirname + '/scene.xml');
 st.next(0);
 
 // expect: start,abc,def,ghi,jkl foo,mno bar,pqr foo,0 > abc,1 > def,abc,def,ghi,vwx,fin

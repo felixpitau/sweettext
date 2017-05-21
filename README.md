@@ -1,4 +1,7 @@
 # sweettext
+
+[![NPM version](https://badge.fury.io/js/sweettext.svg)](http://badge.fury.io/js/sweettext)
+
 Sweettext is a simple, custom narration library you can use in CYOA (Choose Your Own Adventure) games. Useful for writers not proficient in code.
 
 ## Installation

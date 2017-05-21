@@ -6,7 +6,7 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec"
   },
-  "author": "FelixPitau <felixpitau@gmail.com>",
+  "author": "FelixPitau <felixpitau@gmail.com> (http://felix.expert)",
   "license": "MIT",
   "dependencies": {
     "cheerio": "^0.22.0",
