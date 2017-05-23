@@ -24,15 +24,6 @@ $ npm install sweettext
 		<choice prompt="Blue">
 			<set id="color" value="blue"/>
 		</choice>
-		<choice prompt="Green">
-			<set id="color" value="green"/>
-		</choice>
-		<choice prompt="Black">
-			<set id="color" value="black"/>
-		</choice>
-		<choice prompt="White">
-			<set id="color" value="white"/>
-		</choice>
 		<s>
 			<text>
 				You prefer the color v{color}!
@@ -44,7 +35,32 @@ $ npm install sweettext
 
 *index.js*
 ```javascript
-var st = require('sweettext');
+const st = require('sweettext')
+
+// Override onAddText
+st.onAddText = function (text) {
+	// TODO: Display text
+}
+
+// Override onAddChoice
+st.onAddChoice = function (choice, i) {
+	// TODO: Display choice
+}
+
+// Override
+st.onAddChoiceListeners = function () {
+	// TODO: Make a click/touch listener for each choice button and run st.next(i)
+}
+
+// Override onClearChoices
+st.onClearChoices = function () {
+	// TODO: Empty choice display, ready for new choices
+}
+
+// Override onFinish
+st.onFinish = function () {
+	// TODO: Display "THE END"
+}
 
 // Load from xml file
 st.load(__dirname + '/narrative.xml');

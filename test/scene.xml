@@ -59,4 +59,19 @@
 			vwx
 		</text>
 	</s>
+	<s next="ghi">
+		<text>
+			abc
+		</text>
+	</s>
+	<s>
+		<text>
+			def
+		</text>
+	</s>
+	<s id="ghi">
+		<text>
+			ghi
+		</text>
+	</s>
 </scene>

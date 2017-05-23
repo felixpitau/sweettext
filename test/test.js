@@ -5,7 +5,7 @@ var st = require('../index.js'),
 st.load(__dirname + '/scene.xml');
 st.next(0);
 
-// expect: start,abc,def,ghi,jkl foo,mno bar,pqr foo,0 > abc,1 > def,abc,def,ghi,vwx,fin
+// expect: start,abc,def,ghi,jkl foo,mno bar,pqr foo,0 > abc,1 > def,abc,def,ghi,vwx,abc,ghi,fin
 var test = st.log.split(',');
 
 describe("Sweettext Library", function() {
@@ -39,6 +39,10 @@ describe("Sweettext Library", function() {
 	});
 	it("Continue after choice", function() {
 		expect(test[12]).to.equal("vwx");
+	});
+	it("Continue to next sweet using next property", function() {
+		expect(test[13]).to.equal("abc");
+		expect(test[14]).to.equal("ghi");
 	});
 	it("Finish at end of scene", function() {
 		expect(test[test.length - 1]).to.equal("fin");

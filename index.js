@@ -9,6 +9,7 @@ var Sweettext = function () {
 	this.$ = {};
 	this.choices = [];
 	this.inserts = {};
+	this.goto = null;
 	this.log = 'start,';
 	
 	this.formatText = function (text) {
@@ -41,25 +42,30 @@ var Sweettext = function () {
 		}
 	};
 	
-	this.addText = function (text) {
+	this.onAddText = function (text) {
 		this.log += text + ",";
 	};
 	
-	this.addPrompt = function (prompt, i) {
+	this.onAddChoice = function (prompt, i) {
 		this.log += i + ' > ' + prompt + ",";
 	};
 	
-	this.clearPrompts = function () {
+	this.onClearChoices = function () {
 		
 	};
 	
-	this.theEnd = function () {
+	this.onAddChoiceListeners = function () {
+		
+	};
+	
+	this.onFinish = function () {
 		this.log += 'fin';
 	};
 	
 	this.next = function (elem) {
 		if (typeof elem == 'number') {
 			elem = this.$(this.choices.get(elem));
+			this.choices = null;
 		}
 		var childrenSet = elem.children('set');
 		if (childrenSet.length > 0) {
@@ -76,10 +82,13 @@ var Sweettext = function () {
 				}
 			}
 		}
-		this.clearPrompts();
+		if (elem.attr('next') != null) {
+			this.goto = this.$('s#' + elem.attr('next')).first();
+		}
+		this.onClearChoices();
 		if (elem.children('text').length > 0) {
 			var formattedContent = this.formatText(elem.children('text').first().html());
-			this.addText(formattedContent);
+			this.onAddText(formattedContent);
 		}
 		if (elem.children('s').length > 0) {
 			this.next(elem.children('s').first());
@@ -89,31 +98,42 @@ var Sweettext = function () {
 				for (var i = 0; i <  this.choices.length; i++) {
 					var choice = this.$(this.choices.get(i));
 					if (choice.attr('prompt') != null) {
-						this.addPrompt(choice.attr('prompt'), i);
+						this.onAddChoice(choice.attr('prompt'), i);
 					} else {
 						console.log('Each choice must have a prompt');
 					}
 				}
+				this.onAddChoiceListeners();
 			} else {
-				var nextElem = elem;
-				while (nextElem.is('choice') || nextElem.is(':last-child')) {
-					nextElem = nextElem.parent();
-					if (nextElem.is('scene'))
-						break;
-				}
-				if (nextElem.is('scene')){
-					elem = nextElem;
+				if (this.goto != null) {
+					var goto = this.goto;
+					this.goto = null;
+					this.next(goto);
 				} else {
-					this.next(nextElem.next('s'));
+					var nextElem = elem;
+					while (nextElem.is('choice') || nextElem.is(':last-child')) {
+						nextElem = nextElem.parent();
+						if (nextElem.is('scene'))
+							break;
+					}
+					if (nextElem.is('scene')){
+						elem = nextElem;
+					} else {
+						this.next(nextElem.next('s'));
+					}
 				}
 			}
 		}
 		if (elem.is('scene')) {
-			this.theEnd();
+			this.onFinish();
 		}
 	};
 	
 	this.load = function (source) {
+		this.sweetsFileSource = '.';
+		this.sweetDoc = '';
+		this.$ = {};
+		this.choices = [];
 		this.sweetDoc = fs.readFileSync(source);
 		this.$ = cheerio.load(this.sweetDoc, {
 	    withDomLvl1: true,
