@@ -62,26 +62,41 @@ var Sweettext = function () {
 		this.log += 'fin';
 	};
 	
+	this.parseValue = function (value) {
+		if (value == 'true' || value == 'false') {
+			return (value == 'true');
+		} else if (!isNaN(value)) {
+			return parseInt(value, 10);
+		} else {
+			return value;
+		}
+	};
+	
 	this.next = function (elem) {
 		if (typeof elem == 'number') {
 			elem = this.$(this.choices.get(elem));
 			this.choices = null;
 		}
-		var childrenSet = elem.children('set');
-		if (childrenSet.length > 0) {
-			for (var i = 0; i < childrenSet.length; i++) {
-				var childSet = this.$(childrenSet.get(i));
-				var id = childSet.attr("id");
-				var value = childSet.attr("value");
-				if (value == "true") {
-					this.inserts[id] = true;
-				} else if (value == "false") {
-					this.inserts[id] = false;
+		
+		
+		if (elem.children('set').length > 0) {
+			var attribs = elem.children('set')[0].attribs;
+			for (var attr in attribs) {
+				this.inserts[attr] = this.parseValue(attribs[attr]);
+			}
+		}
+		
+		if (elem.children('add').length > 0) {
+			var attribs = elem.children('add')[0].attribs;
+			for (var attr in attribs) {
+				if (this.inserts[attr] == null) {
+					this.inserts[attr] = this.parseValue(attribs[attr]);
 				} else {
-					this.inserts[id] = value;
+					this.inserts[attr] += this.parseValue(attribs[attr]);
 				}
 			}
 		}
+		
 		if (elem.attr('next') != null) {
 			this.goto = this.$('s#' + elem.attr('next')).first();
 		}
@@ -90,6 +105,7 @@ var Sweettext = function () {
 			var formattedContent = this.formatText(elem.children('text').first().html());
 			this.onAddText(formattedContent);
 		}
+		
 		if (elem.children('s').length > 0) {
 			this.next(elem.children('s').first());
 		} else {
@@ -124,6 +140,7 @@ var Sweettext = function () {
 				}
 			}
 		}
+		
 		if (elem.is('scene')) {
 			this.onFinish();
 		}
