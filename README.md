@@ -1,10 +1,8 @@
 <h1 align="center">sweettext</h1>
 
-<p align="center">Sweettext is a simple, custom narration library you can use in CYOA (Choose Your Own Adventure) games.</p>
+<h5 align="center">Sweettext is a simple, custom narration library you can use in CYOA (Choose Your Own Adventure) games.</h5>
 
-<p align="center">
 [![NPM version](https://badge.fury.io/js/sweettext.svg)](http://badge.fury.io/js/sweettext)
-</p>
 
 Useful for writers not proficient in code. This library does not include a graphical interface, you must implement that yourself in something like the command line or an electron app, it's up to you.
 
