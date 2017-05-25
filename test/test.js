@@ -4,8 +4,9 @@ var st = require('../index.js'),
 
 st.load(__dirname + '/scene.xml');
 st.next(0);
+st.next(1);
 
-// expect: start,abc,def,ghi,jkl foo,mno bar,pqr foo,0 > abc,1 > def,abc,def,ghi,vwx,abc,ghi,foo 1,fin
+// expect: start,abc,def,ghi,jkl foo,mno bar,pqr foo,0 > abc,1 > def,abc,def,ghi,vwx,abc,ghi,foo 1,abc abc,meow,meow,1 > def,def,fin
 var test = st.log.split(',');
 
 describe("Sweettext Library", function() {
@@ -46,6 +47,14 @@ describe("Sweettext Library", function() {
 	});
 	it("Add value to an insert", function() {
 		expect(test[15]).to.equal("foo 1");
+	});
+	it("Evaluate if statements for sweets", function() {
+		expect(test[16]).to.equal("meow");
+		expect(test[17]).to.equal("meow");
+	});
+	it("Evaluate if statements for choices", function() {
+		expect(test[18]).to.equal("1 > def");
+		expect(test[19]).to.equal("def");
 	});
 	it("Finish at end of scene", function() {
 		expect(test[test.length - 1]).to.equal("fin");

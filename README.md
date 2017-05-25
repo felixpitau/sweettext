@@ -4,7 +4,7 @@
 
 [![NPM version](https://badge.fury.io/js/sweettext.svg)](http://badge.fury.io/js/sweettext)
 
-Useful for writers not proficient in code. This library does not include a graphical interface, you must implement that yourself in something like the command line or an electron app, it's up to you.
+This library does not include a graphical interface, you must implement that yourself in something like the command line or an electron app, it's up to you.
 
 ## Installation
 ```javascript
@@ -70,6 +70,7 @@ st.load(__dirname + '/narrative.xml');
 ```
 
 ## Features
+
 ### Sweets
 'sweets' or s/choice tags are used as branches to the story often through choices. Each sweet goes through each of it's children as far as it can before returning and running the next one in order. For example:
 ```xml
@@ -95,7 +96,8 @@ One
 Two
 Three
 ```
-Sweets can contain `<choice>`, `<text>`, '<set>', '<add>' and `<s>` but it **cannot** contain `<choice>` and `<s>` at the same time as `<choice>` would be ignored.
+Sweets can contain `<choice>`, `<text>`, `<set>`, `<add>` and `<s>` but it **cannot** contain `<choice>` and `<s>` at the same time as each `<choice>` would be ignored.
+
 #### id & next
 You can use the id and next properties to force the next sweet to be that which matches the id of another. However, this may not work as you'd expect. When next is set, it only runs after the children have run to a stop. For example:
 ```xml
@@ -127,6 +129,19 @@ Two
 Three
 ```
 
+#### if
+Evaluate values of inserts to determine if a sweet should be skipped or a choice not displayed.
+```xml
+<s>
+	<set skip="true"/>
+</s>
+<s if="skip == false">
+	<text>
+		This will not show
+	</text>
+</s>
+```
+
 ### Choices
 Choices display a prompt which a player selects in order to continue. It's contents are the same as that of a sweet and runs like one when selected.
 ```xml
@@ -146,6 +161,7 @@ Choices display a prompt which a player selects in order to continue. It's conte
 
 ### Inserts
 Within `<text>` you have inserts where values are placed into the text, there are different kinds. Sets and adds always take place before the text.
+
 #### Simple replacement
 ```xml
 <set dog="Jake" human="Finn"/>
@@ -159,6 +175,7 @@ Within `<text>` you have inserts where values are placed into the text, there ar
 Jake the dog
 and Finn the human
 ```
+
 #### Ternary replacement
 ```xml
 <set isHuman="true"/>
@@ -177,7 +194,6 @@ Please suggest/make features.
 ## Planned Features
 * Inclusions of more scenes `<include scene="other-scene.xml"/>`
 * Inventory management with inventory inserts `i{thing}`
-* Conditional sweets `<s if="hasThing is true">`
 * Number based inserts `<set val="1"/>` `v{val|zero|one|two|etc}`
 
 ## License

@@ -81,4 +81,28 @@
 			foo v{foo}
 		</text>
 	</s>
+	<s>
+		<set cat="meow"/>
+	</s>
+	<s if="cat == meow">
+		<text>
+			meow
+		</text>
+	</s>
+	<s if="cat != meow">
+		<text>
+			boof
+		</text>
+	</s>
+	<s>
+		<text>
+			meow
+		</text>
+		<choice prompt="abc" if="false"/>
+		<choice prompt="def">
+			<text>
+				def
+			</text>
+		</choice>
+	</s>
 </scene>
