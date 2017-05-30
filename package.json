@@ -1,6 +1,6 @@
 {
   "name": "sweettext",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "A simple, custom narration library.",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,8 @@
   "license": "MIT",
   "dependencies": {
     "cheerio": "^0.22.0",
-    "fs": "0.0.1-security"
+    "fs": "0.0.1-security",
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "chai": "^3.5.0",

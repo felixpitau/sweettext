@@ -1,10 +1,10 @@
 // index.js
-var cheerio = require('cheerio');
-var fs = require('fs');
+const cheerio = require('cheerio');
+const fs = require('fs');
+const path = require('path');
 
 var Sweettext = function () {
 	
-	this.sweetsFileSource = '.';
 	this.sweetDoc = '';
 	this.$ = {};
 	this.choices = [];
@@ -32,7 +32,7 @@ var Sweettext = function () {
 						}
 					}
 				} else if (typeof valueItem == 'object') {
-					console.error('Only boolean, string and number types allowed as values');
+					console.error('[sweettext] Only boolean, string and number types allowed as values');
 					text = text.replace(replaceReg, "");
 				} else {
 					text = text.replace(replaceReg, valueItem);
@@ -78,7 +78,12 @@ var Sweettext = function () {
 				}
 				var parsed = this.parseValue(parts[i]);
 				if (typeof parsed == 'string') {
-					parts[i] = "'" + parsed + "'";
+					if ((parsed.slice(1) == '\'' && parsed.slice(-1) == '\'') ||
+							(parsed.slice(1) == '"' && parsed.slice(-1) == '"')) {
+						parts[i] = parsed;
+					} else {
+						parts[i] = "'" + parsed + "'";
+					}
 				} else {
 					parts[i] = parsed;
 				}
@@ -100,7 +105,7 @@ var Sweettext = function () {
 	this.next = function (elem) {
 		if (typeof elem == 'number') {
 			elem = this.$(this.choices.get(elem));
-			this.choices = null;
+			this.choices = [];
 		}
 		
 		var skip = false;
@@ -129,7 +134,13 @@ var Sweettext = function () {
 			}
 			
 			if (elem.attr('next') != null) {
-				this.goto = this.$('s#' + elem.attr('next')).first();
+				if (this.$('s#' + elem.attr('next')).length > 0) {
+					this.goto = this.$('s#' + elem.attr('next')).first();
+				} else {
+					console.error('[sweettext] Could not find the next sweet with id ' + elem.attr('next'));
+					this.onFinish();
+					return;
+				}
 			}
 			this.onClearChoices();
 			if (elem.children('text').length > 0) {
@@ -150,7 +161,7 @@ var Sweettext = function () {
 							this.onAddChoice(choice.attr('prompt'), i);
 						}
 					} else {
-						console.log('Each choice must have a prompt');
+						console.error('[sweettext] Choice does not have prompt');
 					}
 				}
 				this.onAddChoiceListeners();
@@ -180,18 +191,32 @@ var Sweettext = function () {
 		}
 	};
 	
-	this.load = function (source) {
-		this.sweetsFileSource = '.';
-		this.sweetDoc = '';
-		this.$ = {};
+	this.load = function (loadPath) {
 		this.choices = [];
-		this.sweetDoc = fs.readFileSync(source);
-		this.$ = cheerio.load(this.sweetDoc, {
+		if (loadPath.slice(-4) != '.xml') loadPath += '.xml';
+		this.sweetDoc = fs.readFileSync(loadPath);
+		var cheerioSettings = {
 	    withDomLvl1: true,
 	    normalizeWhitespace: true,
 	    xmlMode: true,
 	    decodeEntities: true
-		});
+		};
+		this.$ = cheerio.load(this.sweetDoc, cheerioSettings);
+		while (this.$('include').length > 0) {
+			for (var i = 0; i < this.$('include').length; i++) {
+				var include = this.$(this.$('include')[i]);
+				var src = include.attr('src');
+				if (src.slice(-4) != '.xml') src += '.xml';
+				var parPath = include.parent().attr('src') != null ? include.parent().attr('src') : loadPath;
+				var incPath = path.join(path.dirname(parPath), src);
+				if (include.attr('src') != null) {
+					var c = cheerio.load(fs.readFileSync(incPath), cheerioSettings);
+					c('scene').first().attr('src', incPath);
+					include.parent().after(c.html());
+				}
+				this.$(this.$('include')[i]).remove();
+			}
+		}
 		this.next(this.$('s').first());
 	};
 };

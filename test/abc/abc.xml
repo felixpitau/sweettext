@@ -1,0 +1,8 @@
+<scene>
+	<include src="def"/>
+	<s id="abc" next="def">
+		<text>
+			abc
+		</text>
+	</s>
+</scene>

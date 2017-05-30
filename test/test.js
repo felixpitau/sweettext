@@ -6,7 +6,7 @@ st.load(__dirname + '/scene.xml');
 st.next(0);
 st.next(1);
 
-// expect: start,abc,def,ghi,jkl foo,mno bar,pqr foo,0 > abc,1 > def,abc,def,ghi,vwx,abc,ghi,foo 1,abc abc,meow,meow,1 > def,def,fin
+// expect: start,abc,def,ghi,jkl foo,mno bar,pqr foo,0 > abc,1 > def,abc,def,ghi,vwx,abc,ghi,foo 1,abc abc,meow,meow,1 > def,def,abc,def,fin
 var test = st.log.split(',');
 
 describe("Sweettext Library", function() {
@@ -55,6 +55,12 @@ describe("Sweettext Library", function() {
 	it("Evaluate if statements for choices", function() {
 		expect(test[18]).to.equal("1 > def");
 		expect(test[19]).to.equal("def");
+	});
+	it("Include other scene files", function() {
+		expect(test[20]).to.equal("abc");
+	});
+	it("Deeply include other scene files", function() {
+		expect(test[21]).to.equal("def");
 	});
 	it("Finish at end of scene", function() {
 		expect(test[test.length - 1]).to.equal("fin");

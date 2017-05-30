@@ -129,16 +129,16 @@ Two
 Three
 ```
 
-#### if
-Evaluate values of inserts to determine if a sweet should be skipped or a choice not displayed.
+#### Conditions
+Evaluate values of inserts to determine if a sweet should be skipped or a choice not displayed. Quotes around strings are not necessary.
 ```xml
 <s>
-	<set skip="true"/>
+  <set skip="true"/>
 </s>
 <s if="skip == false">
-	<text>
-		This will not show
-	</text>
+  <text>
+    This will not show
+  </text>
 </s>
 ```
 
@@ -188,13 +188,20 @@ and Finn the human
 Finn the Human
 ```
 
+### Inclusions
+Additional scenes can be included from different scene xml files and accessed using `next` and `id` attributes on sweets and choices. The `.xml` is assumed and optional.
+```xml
+<include src="adventureTime.xml"/>
+<include src="theGreatMushroomWar"/>
+```
+
 ## Contributing
-Please suggest/make features.
+Please drop in feature suggestions or bug reports to the github repository for this module. I would love to see what people make with this so tweet me [@IAmSyntaxError](https://twitter.com/IAmSyntaxError).
 
 ## Planned Features
-* Inclusions of more scenes `<include scene="other-scene.xml"/>`
 * Inventory management with inventory inserts `i{thing}`
 * Number based inserts `<set val="1"/>` `v{val|zero|one|two|etc}`
+* Run scripts on sweets/choices `<script>function doStuff() { console.log('stuff') }</script>`
 
 ## License
 MIT License Copyright © 2017 Austin "Felix" Lee
